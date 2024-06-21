@@ -76,6 +76,23 @@ app.delete('/api/notes/:id', (req, res) => {
   });
 });
 
+document.addEventListener('DOMContentLoaded', (event) => {
+  fetch('/api/notes')
+    .then(response => response.json())
+    .then(data => {
+      const notesList = document.getElementById('notes-list');
+      notesList.innerHTML = ''; 
+      data.forEach(note => {
+        const noteItem = document.createElement('li');
+        noteItem.textContent = note.title;
+        noteItem.dataset.id = note.id;
+        notesList.appendChild(noteItem);
+      });
+    })
+    .catch(error => console.error('Error fetching notes:', error));
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
