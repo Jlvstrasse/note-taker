@@ -3,12 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
+const api = require('./public/assets/js/index');
+
 const app = express();
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use('/api', api)
 
 // HTML Routes
 app.get('/notes', (req, res) => {
