@@ -68,6 +68,37 @@ app.delete('/api/notes/:id', (req, res) => {
   });
 });
 
+app.post('/api/notes', (req, res) => {
+  const newNote = req.body;
+  fs.readFile('db/db.json', 'utf8', (err, data) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send('Server Error');
+      }
+      const notes = JSON.parse(data);
+
+      if (newNote.id) {
+          const existingNoteIndex = notes.findIndex(note => note.id === newNote.id);
+          if (existingNoteIndex !== -1) {
+              notes[existingNoteIndex] = newNote;
+          } else {
+              return res.status(404).send('Note not found');
+          }
+      } else {
+          newNote.id = uuidv4();
+          notes.push(newNote);
+      }
+
+      fs.writeFile('db/db.json', JSON.stringify(notes, null, 2), (err) => {
+          if (err) {
+              console.error(err);
+              return res.status(500).send('Server Error');
+          }
+          res.json(newNote);
+      });
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
