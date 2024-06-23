@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Helper functions for reading and writing to the db.json file
-const { readFromFile, writeToFile, readAndAppend } = require('../helpers/fsUtils');
+const { readFromFile, writeToFile, readAndAppend } = require('../helper/fsUtils');
 
 // GET Route for retrieving all the notes
 notes.get('/', (req, res) => {
